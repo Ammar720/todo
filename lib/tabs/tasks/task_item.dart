@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/models/task_model.dart';
 
-class TaskItem extends StatefulWidget {
-  const TaskItem({super.key});
-
-  @override
-  State<TaskItem> createState() => _TaskItemState();
-}
-
-class _TaskItemState extends State<TaskItem> {
+class TaskItem extends StatelessWidget {
+  TaskModel task;
+  TaskItem({super.key, required this.task});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,14 +26,14 @@ class _TaskItemState extends State<TaskItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'play basketball',
+                task.title,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
                     ?.copyWith(color: AppTheme.primary),
               ),
               Text(
-                'task description task description',
+                task.description,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
@@ -48,7 +44,7 @@ class _TaskItemState extends State<TaskItem> {
             height: 34,
             decoration: BoxDecoration(
               color: AppTheme.primary,
-              borderRadius: BorderRadius.circular(10),   
+              borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
               Icons.check,
