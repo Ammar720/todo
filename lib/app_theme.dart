@@ -44,6 +44,18 @@ class AppTheme {
         fontSize: 14,
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(primary),
+        foregroundColor: WidgetStatePropertyAll(white),
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+          ),
+        ),
+      ),
+    ),
   );
   static ThemeData darkTheme = ThemeData();
 }
