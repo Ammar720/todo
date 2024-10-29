@@ -11,26 +11,39 @@ class AppTheme {
   static const Color red = Color(0xFFEC4B4B);
 
   static ThemeData lightTheme = ThemeData(
-      primaryColor: primary,
-      scaffoldBackgroundColor: backgroundLight,
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        elevation: 0,
-        selectedItemColor: primary,
-        unselectedItemColor: grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedIconTheme: IconThemeData(size: 35),
-        unselectedIconTheme: IconThemeData(size: 35),
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        foregroundColor: white,
-        backgroundColor: primary,
-        shape: CircleBorder(
-          side: BorderSide(
-            color: white,
-            width: 4,
-          ),
+    primaryColor: primary,
+    scaffoldBackgroundColor: backgroundLight,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      elevation: 0,
+      selectedItemColor: primary,
+      unselectedItemColor: grey,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      selectedIconTheme: IconThemeData(size: 35),
+      unselectedIconTheme: IconThemeData(size: 35),
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      foregroundColor: white,
+      backgroundColor: primary,
+      shape: CircleBorder(
+        side: BorderSide(
+          color: white,
+          width: 4,
         ),
-      ));
+      ),
+    ),
+    textTheme: const TextTheme(
+      titleMedium: TextStyle(
+        color: black,
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+      titleSmall: TextStyle(
+        color: black,
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+      ),
+    ),
+  );
   static ThemeData darkTheme = ThemeData();
 }

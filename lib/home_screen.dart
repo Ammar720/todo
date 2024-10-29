@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/settings.dart';
-import 'package:todo/tasks.dart';
+import 'package:todo/tabs/settings/settings_tab.dart';
+import 'package:todo/tabs/tasks/tasks_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -13,8 +13,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   List<Widget> tabs = [
-    const Tasks(),
-    const Settings(),
+    const TasksTab(),
+    const SettingsTab(),
   ];
 
   @override
