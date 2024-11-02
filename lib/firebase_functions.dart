@@ -11,13 +11,18 @@ class FirebaseFunctions {
   static Future<void> addTaskToFireStore(TaskModel task) {
     CollectionReference<TaskModel> taskCollection = getTasksCollection();
     DocumentReference<TaskModel> documentReference = taskCollection.doc();
-    task.id = documentReference.id ;
+    task.id = documentReference.id;
     return documentReference.set(task);
   }
 
   static Future<List<TaskModel>> getAllTasksFromFireStore() async {
     CollectionReference<TaskModel> taskCollection = getTasksCollection();
-   QuerySnapshot<TaskModel> querySnapshot =  await taskCollection.get();
-   return querySnapshot.docs.map((docSnapshot)=> docSnapshot.data()).toList();
+    QuerySnapshot<TaskModel> querySnapshot = await taskCollection.get();
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
+  }
+
+  static Future<void> deleteTaskToFireStore(String taskId) async {
+    CollectionReference<TaskModel> taskCollection = getTasksCollection();
+    return taskCollection.doc(taskId).delete();
   }
 }

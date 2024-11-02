@@ -1,9 +1,11 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/task_item.dart';
+import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 class TasksTab extends StatefulWidget {
   @override
@@ -11,13 +13,15 @@ class TasksTab extends StatefulWidget {
 }
 
 class _TasksTabState extends State<TasksTab> {
-  List<TaskModel> tasks = [];
+  bool shouldGetTasks = true;
 
   @override
   Widget build(BuildContext context) {
     double screenHight = MediaQuery.sizeOf(context).height;
-    if (tasks.isEmpty) {
-      getTasks();
+    TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
+    if (shouldGetTasks) {
+      tasksProvider.getTasks();
+      shouldGetTasks = false;
     }
     return Column(
       children: [
@@ -45,9 +49,12 @@ class _TasksTabState extends State<TasksTab> {
               padding: EdgeInsets.only(top: screenHight * 0.12),
               child: EasyInfiniteDateTimeLine(
                 firstDate: DateTime.now().subtract(const Duration(days: 365)),
-                focusDate: DateTime.now(),
+                focusDate: tasksProvider.selectedDate,
                 lastDate: DateTime.now().add(const Duration(days: 365)),
                 showTimelineHeader: false,
+                onDateChange: (selectedDate) => {
+                  tasksProvider.changeSelectedDate(selectedDate),
+                },
                 dayProps: EasyDayProps(
                   height: 79,
                   width: 58,
@@ -91,6 +98,23 @@ class _TasksTabState extends State<TasksTab> {
                       color: AppTheme.white,
                     ),
                   ),
+                  todayStyle: DayStyle(
+                    dayNumStyle: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.black,
+                    ),
+                    dayStrStyle: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.black,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: AppTheme.white,
+                      border: Border.all(color: AppTheme.primary ,width: 2)
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -100,17 +124,12 @@ class _TasksTabState extends State<TasksTab> {
           child: ListView.builder(
             padding: const EdgeInsets.only(top: 20),
             itemBuilder: (context, index) => TaskItem(
-              task: tasks[index],
+              task: tasksProvider.tasks[index],
             ),
-            itemCount: tasks.length,
+            itemCount: tasksProvider.tasks.length,
           ),
         ),
       ],
     );
-  }
-
-  Future<void> getTasks() async {
-    tasks = await FirebaseFunctions.getAllTasksFromFireStore();
-    setState(() {});
   }
 }
