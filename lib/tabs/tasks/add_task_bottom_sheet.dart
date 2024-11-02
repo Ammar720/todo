@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
@@ -101,5 +102,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       description: descriptionController.text,
       date: selectedDate,
     );
+    FirebaseFunctions.addTaskToFireStore(task).timeout(
+      Duration(milliseconds: 100),
+      onTimeout: () {
+        Navigator.pop(context);
+      },
+    ).catchError((error) {
+      print(error);
+    });
   }
 }

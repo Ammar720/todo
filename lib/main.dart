@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/home_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseFirestore.instance.disableNetwork();
   runApp(const Todo());
 }
 
@@ -13,15 +18,11 @@ class Todo extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {
-        HomeScreen.routeName : (context) => HomeScreen()
-      },
-
+      routes: {HomeScreen.routeName: (context) => HomeScreen()},
       initialRoute: HomeScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode:ThemeMode.light,
-
+      themeMode: ThemeMode.light,
     );
   }
 }
