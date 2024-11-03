@@ -12,7 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         fixedSize: Size(MediaQuery.sizeOf(context).width, 52),
       ),
-      child: Text(label),
+      child: Text(label , style: TextStyle(fontSize: 21),),
     );
   }
 }

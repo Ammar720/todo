@@ -2,8 +2,6 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
-import 'package:todo/firebase_functions.dart';
-import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 
@@ -60,29 +58,29 @@ class _TasksTabState extends State<TasksTab> {
                   width: 58,
                   dayStructure: DayStructure.dayStrDayNum,
                   activeDayStyle: DayStyle(
-                    dayNumStyle: TextStyle(
+                    dayNumStyle: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primary,
                     ),
-                    dayStrStyle: TextStyle(
+                    dayStrStyle: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primary,
                     ),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
                         color: AppTheme.white,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.25),
                             spreadRadius: 4,
                             blurRadius: 8,
-                            offset: Offset(0, 4),
+                            offset: const Offset(0, 4),
                           ),
                         ]),
                   ),
-                  inactiveDayStyle: DayStyle(
+                  inactiveDayStyle: const DayStyle(
                     dayNumStyle: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

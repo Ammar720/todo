@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
 import 'package:todo/widgets/custom_text_form_field.dart';
