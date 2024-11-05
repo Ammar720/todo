@@ -20,7 +20,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-  DateTime selectedDate = DateTime.now();
+  late DateTime selectedDate;
   var formKey = GlobalKey<FormState>();
   late String taskId;
 
@@ -31,6 +31,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
     titleController.text = taskArg.title;
     descriptionController.text = taskArg.description;
     taskId = taskArg.id;
+    selectedDate = taskArg.date;
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.5,
       decoration: const BoxDecoration(
@@ -84,12 +85,13 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
                     firstDate:
                         DateTime.now().subtract(const Duration(days: 365)),
                     lastDate: DateTime.now().add(const Duration(days: 365)),
-                    initialDate: taskArg.date,
+                    initialDate: selectedDate,
                     initialEntryMode: DatePickerEntryMode.calendarOnly,
                   );
                   if (dateTime != null && dateTime != selectedDate) {
                     setState(() {
                       selectedDate = dateTime;
+                      taskArg.date = dateTime ;
                     });
                   }
                 },
