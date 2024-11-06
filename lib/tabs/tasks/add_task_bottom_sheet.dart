@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
@@ -22,10 +23,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   DateFormat dateFormat = DateFormat('dd/MM/yyyy');
   DateTime selectedDate = DateTime.now();
   var formKey = GlobalKey<FormState>();
-
+  late String userId;
   @override
   Widget build(BuildContext context) {
     TextStyle? titeleMediumStyle = Theme.of(context).textTheme.titleMedium;
+    userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
 
     return Padding(
       padding:
@@ -117,11 +119,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       description: descriptionController.text,
       date: selectedDate,
     );
-    FirebaseFunctions.addTaskToFireStore(task).timeout(
-      const Duration(milliseconds: 100),
-      onTimeout: () {
+    FirebaseFunctions.addTaskToFireStore(task, userId).then(
+       (_) {
         Navigator.pop(context);
-        Provider.of<TasksProvider>(context, listen: false).getTasks();
+        Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
         Fluttertoast.showToast(
           msg: "Task added successfully",
           toastLength: Toast.LENGTH_LONG,

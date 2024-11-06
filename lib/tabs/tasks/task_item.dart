@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/edit_task_screen.dart';
@@ -19,6 +20,8 @@ class _TaskItemState extends State<TaskItem> {
   @override
   Widget build(BuildContext context) {
     Color taskColor = widget.task.isDone ? AppTheme.green : AppTheme.primary;
+    String userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+
     return InkWell(
       onTap: () => {
         Navigator.pushNamed(context, EditTaskScreen.routeName,
@@ -35,12 +38,12 @@ class _TaskItemState extends State<TaskItem> {
             children: [
               SlidableAction(
                 onPressed: (_) {
-                  FirebaseFunctions.deleteTaskToFireStore(widget.task.id)
-                      .timeout(
-                    const Duration(milliseconds: 100),
-                    onTimeout: () {
+                  FirebaseFunctions.deleteTaskToFireStore(
+                          widget.task.id, userId)
+                      .then(
+                    (_) {
                       Provider.of<TasksProvider>(context, listen: false)
-                          .getTasks();
+                          .getTasks(userId);
                       Fluttertoast.showToast(
                         msg: "Task deleted successfully",
                         toastLength: Toast.LENGTH_LONG,
@@ -104,11 +107,10 @@ class _TaskItemState extends State<TaskItem> {
                       widget.task.isDone = !widget.task.isDone;
                     });
                     await FirebaseFunctions.updateTaskStateInFireStore(
-                      widget.task.id,
-                      widget.task.isDone,
-                    ).then((_) {
+                            widget.task.id, widget.task.isDone, userId)
+                        .then((_) {
                       Provider.of<TasksProvider>(context, listen: false)
-                          .getTasks();
+                          .getTasks(userId);
                       Fluttertoast.showToast(
                         msg: "Task updated successfully",
                         toastLength: Toast.LENGTH_LONG,

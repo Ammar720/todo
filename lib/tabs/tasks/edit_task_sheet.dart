@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
@@ -23,6 +24,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
   late DateTime selectedDate;
   var formKey = GlobalKey<FormState>();
   late String taskId;
+  late String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
     descriptionController.text = taskArg.description;
     taskId = taskArg.id;
     selectedDate = taskArg.date;
+    userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.5,
       decoration: const BoxDecoration(
@@ -91,7 +94,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
                   if (dateTime != null && dateTime != selectedDate) {
                     setState(() {
                       selectedDate = dateTime;
-                      taskArg.date = dateTime ;
+                      taskArg.date = dateTime;
                     });
                   }
                 },
@@ -122,11 +125,10 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
       date: selectedDate,
       id: taskId,
     );
-    FirebaseFunctions.updateTaskDataInFireStore(task).timeout(
-      const Duration(milliseconds: 100),
-      onTimeout: () {
+    FirebaseFunctions.updateTaskDataInFireStore(task, userId).then(
+      (_) {
         Navigator.pop(context);
-        Provider.of<TasksProvider>(context, listen: false).getTasks();
+        Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
         Fluttertoast.showToast(
           msg: "Task updated successfully",
           toastLength: Toast.LENGTH_LONG,

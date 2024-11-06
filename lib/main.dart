@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/auth/login_screen.dart';
 import 'package:todo/auth/register_screen.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/home_screen.dart';
 import 'package:todo/tabs/tasks/edit_task_screen.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
@@ -12,10 +12,14 @@ import 'package:todo/tabs/tasks/tasks_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseFirestore.instance.disableNetwork();
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => TasksProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => TasksProvider(),
+        ),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+      ],
       child: const Todo(),
     ),
   );

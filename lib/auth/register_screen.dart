@@ -1,5 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/app_theme.dart';
 import 'package:todo/auth/login_screen.dart';
+import 'package:todo/auth/user_provider.dart';
+import 'package:todo/firebase_functions.dart';
+import 'package:todo/home_screen.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
 import 'package:todo/widgets/custom_text_form_field.dart';
 
@@ -8,17 +15,17 @@ class RegisterScreen extends StatefulWidget {
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
-TextEditingController namecontroller = TextEditingController();
-TextEditingController emailcontroller = TextEditingController();
-TextEditingController passwordcontroller = TextEditingController();
-var formKey = GlobalKey<FormState>();
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -27,12 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               CustomTextFormField(
+              CustomTextFormField(
                 controller: namecontroller,
                 hintText: 'Name',
                 validator: (value) {
                   if (value == null || value.trim().length < 5) {
-                    return 'Name can not be less than 2 characters';
+                    return 'Name can not be less than 5 characters';
                   }
                   return null;
                 },
@@ -54,8 +61,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintText: 'Password',
                 isPassword: true,
                 validator: (value) {
-                  if (value == null || value.trim().length < 5) {
-                    return 'Password can not be less than 8 characters';
+                  if (value == null || value.trim().length < 6) {
+                    return 'Password can not be less than 6 characters';
                   }
                   return null;
                 },
@@ -78,6 +85,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void register() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      FirebaseFunctions.register(
+        name: namecontroller.text,
+        email: emailcontroller.text,
+        password: passwordcontroller.text,
+      ).then((user) {
+        Provider.of<UserProvider>(context, listen: false).updateUser(user);
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }).catchError(
+        (error) {
+          String? message;
+          if (error is FirebaseAuthException) {
+            message = error.message;
+          }
+          Fluttertoast.showToast(
+            msg: message ?? "Something went wrong",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: AppTheme.red,
+          );
+        },
+      );
+    }
   }
 }
