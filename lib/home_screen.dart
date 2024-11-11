@@ -14,8 +14,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   List<Widget> tabs = [
-     TasksTab(),
-     SettingsTab(),
+     const TasksTab(),
+     const SettingsTab(),
   ];
 
   @override
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: BottomNavigationBar(
               onTap: (index) => {currentIndex = index, setState(() {})},
               currentIndex: currentIndex,
-              items: [
+              items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list),
                   label: 'Tasks',
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          builder: (context) => AddTaskBottomSheet(),
+          builder: (context) => const AddTaskBottomSheet(),
         ),
         child: const Icon(
           Icons.add,

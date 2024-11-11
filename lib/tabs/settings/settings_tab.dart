@@ -17,7 +17,7 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
@@ -37,7 +37,7 @@ class _SettingsTabState extends State<SettingsTab> {
                       Provider.of<UserProvider>(context, listen: false)
                           .updateUser(null);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout,
                       size: 30,
                     ))

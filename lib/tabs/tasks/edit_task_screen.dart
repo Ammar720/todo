@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/tabs/tasks/edit_task_sheet.dart';
-import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 class EditTaskScreen extends StatelessWidget {
   static const String routeName = '/edit';
@@ -11,7 +9,6 @@ class EditTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHight = MediaQuery.sizeOf(context).height;
-    TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -38,8 +35,8 @@ class EditTaskScreen extends StatelessWidget {
             
          Container(
           height: screenHight * 0.5,
-          padding: EdgeInsets.all(20),
-         child: EditTaskSheet(),
+          padding: const EdgeInsets.all(20),
+         child: const EditTaskSheet(),
          )
           ],
         ),

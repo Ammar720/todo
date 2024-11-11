@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
-  String label;
-  VoidCallback onPressed;
-  CustomElevatedButton({required this.label, required this.onPressed});
+ final String label;
+ final VoidCallback onPressed;
+  const CustomElevatedButton({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class CustomElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         fixedSize: Size(MediaQuery.sizeOf(context).width, 52),
       ),
-      child: Text(label , style: TextStyle(fontSize: 21),),
+      child: Text(label , style: const TextStyle(fontSize: 21),),
     );
   }
 }

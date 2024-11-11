@@ -120,9 +120,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       date: selectedDate,
     );
     FirebaseFunctions.addTaskToFireStore(task, userId).then(
-       (_) {
-        Navigator.pop(context);
-        Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
+      (_) {
+        if (mounted) {
+          Navigator.pop(context);
+          Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
+        }
         Fluttertoast.showToast(
           msg: "Task added successfully",
           toastLength: Toast.LENGTH_LONG,

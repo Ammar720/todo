@@ -127,15 +127,17 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
     );
     FirebaseFunctions.updateTaskDataInFireStore(task, userId).then(
       (_) {
-        Navigator.pop(context);
-        Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
-        Fluttertoast.showToast(
-          msg: "Task updated successfully",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 5,
-          backgroundColor: AppTheme.green,
-        );
+        if (mounted) {
+          Navigator.pop(context);
+          Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
+          Fluttertoast.showToast(
+            msg: "Task updated successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: AppTheme.green,
+          );
+        }
       },
     ).catchError((error) {
       Fluttertoast.showToast(

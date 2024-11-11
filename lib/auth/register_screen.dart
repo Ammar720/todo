@@ -12,6 +12,8 @@ import 'package:todo/widgets/custom_text_form_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register';
+
+  const RegisterScreen({super.key});
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -44,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomTextFormField(
                 controller: emailcontroller,
                 hintText: 'Email',
@@ -55,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomTextFormField(
                 controller: passwordcontroller,
                 hintText: 'Password',
@@ -67,15 +69,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               CustomElevatedButton(label: 'register', onPressed: register),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(
                       context, LoginScreen.routeName);
                 },
-                child: Text('Already have an account'),
+                child: const Text('Already have an account'),
               )
             ],
           ),
@@ -91,8 +93,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: emailcontroller.text,
         password: passwordcontroller.text,
       ).then((user) {
-        Provider.of<UserProvider>(context, listen: false).updateUser(user);
-        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        if (mounted) {
+          Provider.of<UserProvider>(context, listen: false).updateUser(user);
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        }
       }).catchError(
         (error) {
           String? message;

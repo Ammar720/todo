@@ -33,10 +33,10 @@ class Todo extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        HomeScreen.routeName: (context) => HomeScreen(),
-        EditTaskScreen.routeName: (context) => EditTaskScreen(),
-        LoginScreen.routeName: (context) => LoginScreen(),
-        RegisterScreen.routeName: (context) => RegisterScreen()
+        HomeScreen.routeName: (context) => const HomeScreen(),
+        EditTaskScreen.routeName: (context) => const EditTaskScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        RegisterScreen.routeName: (context) => const RegisterScreen()
       },
       initialRoute: LoginScreen.routeName,
       theme: AppTheme.lightTheme,

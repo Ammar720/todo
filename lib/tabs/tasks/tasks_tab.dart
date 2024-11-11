@@ -7,6 +7,8 @@ import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 class TasksTab extends StatefulWidget {
+  const TasksTab({super.key});
+
   @override
   State<TasksTab> createState() => _TasksTabState();
 }
@@ -99,18 +101,18 @@ class _TasksTabState extends State<TasksTab> {
                     ),
                   ),
                   todayStyle: DayStyle(
-                    dayNumStyle: TextStyle(
+                    dayNumStyle: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.black,
                     ),
-                    dayStrStyle: TextStyle(
+                    dayStrStyle: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.black,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                       color: AppTheme.white,
                       border: Border.all(color: AppTheme.primary ,width: 2)
                     ),

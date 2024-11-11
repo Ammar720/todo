@@ -10,8 +10,8 @@ import 'package:todo/tabs/tasks/edit_task_screen.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 class TaskItem extends StatefulWidget {
-  TaskModel task;
-  TaskItem({super.key, required this.task});
+  final TaskModel task;
+  const TaskItem({super.key, required this.task});
   @override
   State<TaskItem> createState() => _TaskItemState();
 }
@@ -20,7 +20,8 @@ class _TaskItemState extends State<TaskItem> {
   @override
   Widget build(BuildContext context) {
     Color taskColor = widget.task.isDone ? AppTheme.green : AppTheme.primary;
-    String userId = Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    String userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
 
     return InkWell(
       onTap: () => {
@@ -42,15 +43,17 @@ class _TaskItemState extends State<TaskItem> {
                           widget.task.id, userId)
                       .then(
                     (_) {
-                      Provider.of<TasksProvider>(context, listen: false)
-                          .getTasks(userId);
-                      Fluttertoast.showToast(
-                        msg: "Task deleted successfully",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 5,
-                        backgroundColor: AppTheme.green,
-                      );
+                      if (context.mounted) {
+                        Provider.of<TasksProvider>(context, listen: false)
+                            .getTasks(userId);
+                        Fluttertoast.showToast(
+                          msg: "Task deleted successfully",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: AppTheme.green,
+                        );
+                      }
                     },
                   ).catchError((error) {
                     Fluttertoast.showToast(
@@ -109,15 +112,17 @@ class _TaskItemState extends State<TaskItem> {
                     await FirebaseFunctions.updateTaskStateInFireStore(
                             widget.task.id, widget.task.isDone, userId)
                         .then((_) {
-                      Provider.of<TasksProvider>(context, listen: false)
-                          .getTasks(userId);
-                      Fluttertoast.showToast(
-                        msg: "Task updated successfully",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 5,
-                        backgroundColor: AppTheme.green,
-                      );
+                      if (context.mounted) {
+                        Provider.of<TasksProvider>(context, listen: false)
+                            .getTasks(userId);
+                        Fluttertoast.showToast(
+                          msg: "Task updated successfully",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: AppTheme.green,
+                        );
+                      }
                     }).catchError((error) {
                       Fluttertoast.showToast(
                         msg: "Something went wrong",

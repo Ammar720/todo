@@ -13,20 +13,21 @@ import 'package:todo/widgets/custom_text_form_field.dart';
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
 
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-
 class _LoginScreenState extends State<LoginScreen> {
-TextEditingController emailcontroller = TextEditingController();
-TextEditingController passwordcontroller = TextEditingController();
-var formKey = GlobalKey<FormState>();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -45,7 +46,7 @@ var formKey = GlobalKey<FormState>();
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomTextFormField(
                 controller: passwordcontroller,
                 hintText: 'Password',
@@ -57,15 +58,15 @@ var formKey = GlobalKey<FormState>();
                   return null;
                 },
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               CustomElevatedButton(label: 'Login', onPressed: login),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(
                       context, RegisterScreen.routeName);
                 },
-                child: Text('Dont have an account'),
+                child: const Text('Dont have an account'),
               )
             ],
           ),
@@ -76,18 +77,19 @@ var formKey = GlobalKey<FormState>();
 
   void login() {
     if (formKey.currentState!.validate()) {
-      
-    FirebaseFunctions.login(
+      FirebaseFunctions.login(
         email: emailcontroller.text,
         password: passwordcontroller.text,
       ).then((user) {
-        Provider.of<UserProvider>(context, listen: false).updateUser(user);
-        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        if (mounted) {
+          Provider.of<UserProvider>(context, listen: false).updateUser(user);
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        }
       }).catchError(
         (error) {
-          String? message ;
+          String? message;
           if (error is FirebaseAuthException) {
-            message = error.message ;
+            message = error.message;
           }
           Fluttertoast.showToast(
             msg: message ?? "Something went wrong",
