@@ -8,6 +8,7 @@ import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/tabs/tasks/edit_task_screen.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskItem extends StatefulWidget {
   final TaskModel task;
@@ -47,7 +48,8 @@ class _TaskItemState extends State<TaskItem> {
                         Provider.of<TasksProvider>(context, listen: false)
                             .getTasks(userId);
                         Fluttertoast.showToast(
-                          msg: "Task deleted successfully",
+                          msg: AppLocalizations.of(context)!
+                              .taskDeletedSuccessfully,
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 5,
@@ -56,20 +58,22 @@ class _TaskItemState extends State<TaskItem> {
                       }
                     },
                   ).catchError((error) {
-                    Fluttertoast.showToast(
-                      msg: "Something went worng",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 5,
-                      backgroundColor: AppTheme.red,
-                    );
+                    if (context.mounted) {
+                      Fluttertoast.showToast(
+                        msg: AppLocalizations.of(context)!.somethingWentWorng,
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 5,
+                        backgroundColor: AppTheme.red,
+                      );
+                    }
                   });
                 },
                 backgroundColor: AppTheme.red,
                 foregroundColor: AppTheme.white,
                 borderRadius: BorderRadius.circular(15),
                 icon: Icons.delete,
-                label: 'Delete',
+                label: AppLocalizations.of(context)!.delete,
               )
             ],
           ),
@@ -116,7 +120,8 @@ class _TaskItemState extends State<TaskItem> {
                         Provider.of<TasksProvider>(context, listen: false)
                             .getTasks(userId);
                         Fluttertoast.showToast(
-                          msg: "Task updated successfully",
+                          msg: AppLocalizations.of(context)!
+                              .taskUpdatedSuccessfully,
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 5,
@@ -124,22 +129,24 @@ class _TaskItemState extends State<TaskItem> {
                         );
                       }
                     }).catchError((error) {
-                      Fluttertoast.showToast(
-                        msg: "Something went wrong",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 5,
-                        backgroundColor: AppTheme.red,
-                      );
+                      if (context.mounted) {
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context)!.somethingWentWorng,
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: AppTheme.red,
+                        );
+                      }
                       setState(() {
                         widget.task.isDone = !widget.task.isDone;
                       });
                     });
                   },
                   child: widget.task.isDone
-                      ? const Text(
-                          'Done!',
-                          style: TextStyle(
+                      ? Text(
+                          AppLocalizations.of(context)!.done,
+                          style: const TextStyle(
                               color: AppTheme.green,
                               fontSize: 22,
                               fontWeight: FontWeight.bold),

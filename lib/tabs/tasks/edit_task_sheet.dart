@@ -9,6 +9,7 @@ import 'package:todo/tabs/tasks/tasks_provider.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
 import 'package:todo/widgets/custom_text_form_field.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditTaskSheet extends StatefulWidget {
   const EditTaskSheet({super.key});
@@ -50,14 +51,15 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
           key: formKey,
           child: Column(
             children: [
-              Text('Edit Task', style: titeleMediumStyle),
+              Text(AppLocalizations.of(context)!.editTask,
+                  style: titeleMediumStyle),
               const SizedBox(height: 20),
               CustomTextFormField(
                 controller: titleController,
-                hintText: 'Enter task title',
+                hintText: AppLocalizations.of(context)!.enterTaskTitle,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Titel can not be empty';
+                    return AppLocalizations.of(context)!.titelCanNotBeEmpty;
                   }
                   return null;
                 },
@@ -65,17 +67,18 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
               const SizedBox(height: 20),
               CustomTextFormField(
                 controller: descriptionController,
-                hintText: 'Enter task description',
+                hintText: AppLocalizations.of(context)!.enterTaskDescription,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Description can not be empty';
+                    return AppLocalizations.of(context)!
+                        .descriptionCanNotBeEmpty;
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 15),
               Text(
-                'selected date',
+                AppLocalizations.of(context)!.selectDate,
                 style: titeleMediumStyle?.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -104,7 +107,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
               ),
               const SizedBox(height: 30),
               CustomElevatedButton(
-                label: 'save changes',
+                label: AppLocalizations.of(context)!.saveChanges,
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     updateTask();
@@ -131,7 +134,7 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
           Navigator.pop(context);
           Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
           Fluttertoast.showToast(
-            msg: "Task updated successfully",
+            msg: AppLocalizations.of(context)!.taskUpdatedSuccessfully,
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 5,
@@ -140,13 +143,15 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
         }
       },
     ).catchError((error) {
-      Fluttertoast.showToast(
-        msg: "Something went worng",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: AppTheme.red,
-      );
+      if (mounted) {
+        Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.somethingWentWorng,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: AppTheme.red,
+        );
+      }
     });
   }
 }

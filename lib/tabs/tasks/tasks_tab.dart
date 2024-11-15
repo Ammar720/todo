@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/auth/user_provider.dart';
+import 'package:todo/tabs/settings/setting_provider.dart';
 import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksTab extends StatefulWidget {
   const TasksTab({super.key});
@@ -18,9 +20,11 @@ class _TasksTabState extends State<TasksTab> {
 
   @override
   Widget build(BuildContext context) {
+    SettingProvider settingProvider = Provider.of<SettingProvider>(context);
     double screenHight = MediaQuery.sizeOf(context).height;
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
-    String userId =  Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    String userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     if (shouldGetTasks) {
       tasksProvider.getTasks(userId);
       shouldGetTasks = false;
@@ -39,7 +43,7 @@ class _TasksTabState extends State<TasksTab> {
               top: screenHight * 0.01,
               child: SafeArea(
                 child: Text(
-                  'ToDO List',
+                  AppLocalizations.of(context)!.toDoList,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
@@ -50,12 +54,13 @@ class _TasksTabState extends State<TasksTab> {
             Padding(
               padding: EdgeInsets.only(top: screenHight * 0.12),
               child: EasyInfiniteDateTimeLine(
+                locale: settingProvider.languageCode,
                 firstDate: DateTime.now().subtract(const Duration(days: 365)),
                 focusDate: tasksProvider.selectedDate,
                 lastDate: DateTime.now().add(const Duration(days: 365)),
                 showTimelineHeader: false,
                 onDateChange: (selectedDate) => {
-                  tasksProvider.getSelectedDateTasks(selectedDate , userId),
+                  tasksProvider.getSelectedDateTasks(selectedDate, userId),
                 },
                 dayProps: EasyDayProps(
                   height: 79,
@@ -73,7 +78,8 @@ class _TasksTabState extends State<TasksTab> {
                       color: AppTheme.primary,
                     ),
                     decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
                         color: AppTheme.white,
                         boxShadow: [
                           BoxShadow(
@@ -112,10 +118,10 @@ class _TasksTabState extends State<TasksTab> {
                       color: AppTheme.black,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: AppTheme.white,
-                      border: Border.all(color: AppTheme.primary ,width: 2)
-                    ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        color: AppTheme.white,
+                        border: Border.all(color: AppTheme.primary, width: 2)),
                   ),
                 ),
               ),

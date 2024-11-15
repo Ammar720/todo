@@ -9,6 +9,7 @@ import 'package:todo/tabs/tasks/tasks_provider.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
 import 'package:todo/widgets/custom_text_form_field.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -47,14 +48,15 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
             key: formKey,
             child: Column(
               children: [
-                Text('Add New Task', style: titeleMediumStyle),
+                Text(AppLocalizations.of(context)!.addNewTask,
+                    style: titeleMediumStyle),
                 const SizedBox(height: 20),
                 CustomTextFormField(
                   controller: titleController,
-                  hintText: 'Enter task title',
+                  hintText: AppLocalizations.of(context)!.enterTaskTitle,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Titel can not be empty';
+                      return AppLocalizations.of(context)!.titelCanNotBeEmpty;
                     }
                     return null;
                   },
@@ -62,17 +64,18 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 const SizedBox(height: 20),
                 CustomTextFormField(
                   controller: descriptionController,
-                  hintText: 'Enter task description',
+                  hintText: AppLocalizations.of(context)!.enterTaskDescription,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Description can not be empty';
+                      return AppLocalizations.of(context)!
+                          .descriptionCanNotBeEmpty;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  'Select date',
+                  AppLocalizations.of(context)!.selectDate,
                   style: titeleMediumStyle?.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -98,7 +101,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 ),
                 const SizedBox(height: 30),
                 CustomElevatedButton(
-                  label: 'add',
+                  label: AppLocalizations.of(context)!.add,
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       addTask();
@@ -125,22 +128,26 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           Navigator.pop(context);
           Provider.of<TasksProvider>(context, listen: false).getTasks(userId);
         }
+        if (mounted) {
+          Fluttertoast.showToast(
+            msg: AppLocalizations.of(context)!.taskaddedSuccessfully,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: AppTheme.green,
+          );
+        }
+      },
+    ).catchError((error) {
+      if (mounted) {
         Fluttertoast.showToast(
-          msg: "Task added successfully",
+          msg: AppLocalizations.of(context)!.somethingWentWorng,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 5,
-          backgroundColor: AppTheme.green,
+          backgroundColor: AppTheme.red,
         );
-      },
-    ).catchError((error) {
-      Fluttertoast.showToast(
-        msg: "Something went worng",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: AppTheme.red,
-      );
+      }
     });
   }
 }

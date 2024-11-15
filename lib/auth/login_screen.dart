@@ -9,6 +9,7 @@ import 'package:todo/firebase_functions.dart';
 import 'package:todo/home_screen.dart';
 import 'package:todo/widgets/custom_elevated_button.dart';
 import 'package:todo/widgets/custom_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(AppLocalizations.of(context)!.login),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -38,10 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               CustomTextFormField(
                 controller: emailcontroller,
-                hintText: 'Email',
+                hintText: AppLocalizations.of(context)!.email,
                 validator: (value) {
                   if (value == null || value.trim().length < 5) {
-                    return 'Email can not be less than 5 characters';
+                    return AppLocalizations.of(context)!
+                        .emailCanNotBeLessThan5Characters;
                   }
                   return null;
                 },
@@ -49,24 +51,26 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               CustomTextFormField(
                 controller: passwordcontroller,
-                hintText: 'Password',
+                hintText: AppLocalizations.of(context)!.password,
                 isPassword: true,
                 validator: (value) {
                   if (value == null || value.trim().length < 8) {
-                    return 'Password can not be less than 8 characters';
+                    return AppLocalizations.of(context)!
+                        .passwordCanNotBeLessThan8Characters;
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 40),
-              CustomElevatedButton(label: 'Login', onPressed: login),
+              CustomElevatedButton(
+                  label: AppLocalizations.of(context)!.login, onPressed: login),
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(
                       context, RegisterScreen.routeName);
                 },
-                child: const Text('Dont have an account'),
+                child: Text(AppLocalizations.of(context)!.dontHaveAnAccount),
               )
             ],
           ),
@@ -91,13 +95,15 @@ class _LoginScreenState extends State<LoginScreen> {
           if (error is FirebaseAuthException) {
             message = error.message;
           }
-          Fluttertoast.showToast(
-            msg: message ?? "Something went wrong",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 5,
-            backgroundColor: AppTheme.red,
-          );
+          if (mounted) {
+            Fluttertoast.showToast(
+              msg: message ?? AppLocalizations.of(context)!.somethingWentWorng,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 5,
+              backgroundColor: AppTheme.red,
+            );
+          }
         },
       );
     }
